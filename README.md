@@ -6,8 +6,9 @@
 
 **1.安装**
 ```
-lblelink_plugin:
-    git: https://github.com/pleasecallmelm/lblelink_plugin.git
+lblelink_plugin: 
+path:../
+
 ```
 **2.导入**
 ```

@@ -1,4 +1,4 @@
-package com.example.lblelinkplugin_example
+package com.shangyu.video
 
 import androidx.annotation.NonNull;
 import io.flutter.embedding.android.FlutterActivity

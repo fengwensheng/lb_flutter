@@ -63,20 +63,28 @@ class Lblelinkplugin {
 
   //初始化sdk
   //返回值：初始化成功与否
-  static Future<bool> initLBSdk(String appid, String secretKey) async {
+  static Future<bool> initLBSdk({
+    @required String androidAppid,
+    @required String androidSecretKey,
+    @required String iosAppid,
+    @required String iosSecretKey,
+  }) async {
     //初始化的时候注册eventChannel回调
     eventChannelDistribution();
-    return _channel
-        .invokeMethod("initLBSdk", {"appid": appid, "secretKey": secretKey}).then((data){
-
-          return data;
+    return _channel.invokeMethod(
+      "initLBSdk",
+      {
+        "androidAppid": androidAppid,
+        "androidSecretKey": androidSecretKey,
+        "iosAppid": iosAppid,
+        "iosSecretKey": iosSecretKey,
+      },
+    ).then((data) {
+      return data;
     });
 
-
     //初始化的时候注册eventChannel回调
-
-    eventChannelDistribution();
-
+    // eventChannelDistribution();
   }
 
   //获取设备列表
@@ -99,30 +107,30 @@ class Lblelinkplugin {
   }
 
   //连接设备(参数未定)
-  static connectToService(String ipAddress,String name,
+  static connectToService(String ipAddress, String name,
       {@required Function fConnectListener,
-        @required Function fDisConnectListener}) {
+      @required Function fDisConnectListener}) {
     _connectListener = fConnectListener;
     _disConnectListener = fDisConnectListener;
-    _channel.invokeMethod("connectToService", {"ipAddress": ipAddress,"name":name});
+    _channel.invokeMethod(
+        "connectToService", {"ipAddress": ipAddress, "name": name});
   }
 
-
   //获取上次连接的设备
-  static Future<TvData> getLastConnectService(){
-    return _channel.invokeMethod("getLastConnectService").then((data){
-
-      print("data is ${data}");
+  static Future<TvData> getLastConnectService() {
+    return _channel.invokeMethod("getLastConnectService").then((data) {
+      print("data is ${data["tvName"]}");
 
 //      if (data == null){
 //        return data;
 //      }
 
-      return TvData()..uId = data["tvUID"]..name = data["tvName"]..ipAddress = data["ipAddress"];
-
+      return TvData()
+        ..uId = data["tvUID"]
+        ..name = data["tvName"]
+        ..ipAddress = data["ipAddress"];
     });
   }
-
 
   //断开连接
   static disConnect() {
@@ -161,28 +169,15 @@ class Lblelinkplugin {
 }
 
 abstract class LbCallBack {
-  void startCallBack(){
+  void startCallBack() {}
 
-  }
+  void loadingCallBack() {}
 
-  void loadingCallBack(){
+  void completeCallBack() {}
 
-  }
+  void pauseCallBack() {}
 
-  void completeCallBack(){
+  void stopCallBack() {}
 
-  }
-
-  void pauseCallBack(){
-
-  }
-
-  void stopCallBack(){
-
-  }
-
-  void errorCallBack(String errorDes){
-
-  }
-
+  void errorCallBack(String errorDes) {}
 }

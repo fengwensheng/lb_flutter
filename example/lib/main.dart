@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:lb_flutter/tv_list.dart';
@@ -22,8 +20,6 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
     initPlatformState();
-
-
   }
 
   // Platform messages are asynchronous, so we initialize in an async method.
@@ -40,10 +36,8 @@ class _MyAppState extends State<MyApp> {
     // message was in flight, we want to discard the reply rather than calling
     // setState to update our non-existent appearance.
     if (!mounted) return;
-
-    setState(() {
-      _platformVersion = platformVersion;
-    });
+    _platformVersion = platformVersion;
+    setState(() {});
   }
 
   @override
@@ -51,17 +45,28 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('Plugin example app'),
+          title: const Text(
+            'Plugin example app',
+          ),
+          actions: [
+            Text('$_platformVersion'),
+          ],
         ),
         body: Row(
           children: <Widget>[
             Column(
               children: <Widget>[
                 FlatButton(
-                    onPressed: () {
-                      Lblelinkplugin.initLBSdk(
-                          "14342", "c67255e53e3feee87673bc67f6895360");
+                    onPressed: () async {
+                      //android
+                      bool initResult = await Lblelinkplugin.initLBSdk(
+                        androidAppid: "16190",
+                        androidSecretKey: "6f6976404d511c786ab3597446892309",
+                        iosAppid: '16236',
+                        iosSecretKey: 'b2946ceede07ac3a4241f62ccfb7c743',
+                      );
                       Lblelinkplugin.eventChannelDistribution();
+                      print('初始化结果: $initResult');
                     },
                     child: Text("初始化")),
                 FlatButton(
@@ -75,29 +80,27 @@ class _MyAppState extends State<MyApp> {
                     child: Text("搜索设备")),
                 FlatButton(
                     onPressed: () {
-
-                      Lblelinkplugin.getLastConnectService().then((value){
-
-                        print("上次设备是：${value}");
-
+                      Lblelinkplugin.getLastConnectService().then((value) {
+                        print("上次设备是：$value");
                       });
-
                     },
                     child: Text("上次设备")),
                 FlatButton(
                     onPressed: () {
                       Lblelinkplugin.play(
-                          'http://pullhls80d25490.live.126.net/live/7d9cc146131245ddbf2126d56c699191/playlist.m3u8');
+                        // 'http://pullhls80d25490.live.126.net/live/7d9cc146131245ddbf2126d56c699191/playlist.m3u8',
+                        'http://vfx.mtime.cn/Video/2019/02/04/mp4/190204084208765161.mp4',
+                      );
                     },
                     child: Text("开始投屏")),
                 FlatButton(
                     onPressed: () {
 //                      Lblelinkplugin.pause();
 
-                      Lblelinkplugin.getLastConnectService().then((data){
-                        print("******${data.ipAddress},${data.name},${data.uId}");
+                      Lblelinkplugin.getLastConnectService().then((data) {
+                        print(
+                            "******${data.ipAddress},${data.name},${data.uId}");
                       });
-                    
                     },
                     child: Text("暂停")),
                 FlatButton(
@@ -127,8 +130,12 @@ class _MyAppState extends State<MyApp> {
                       ],
                     ),
                     onTap: () {
-                      Lblelinkplugin.connectToService(_serviceNames[index].ipAddress,
-                          fConnectListener: () {}, fDisConnectListener: () {});
+                      Lblelinkplugin.connectToService(
+                        _serviceNames[index].ipAddress,
+                        _serviceNames[index].name,
+                        fConnectListener: () {},
+                        fDisConnectListener: () {},
+                      );
                     },
                   );
                 },
@@ -144,5 +151,4 @@ class _MyAppState extends State<MyApp> {
       ),
     );
   }
-
 }

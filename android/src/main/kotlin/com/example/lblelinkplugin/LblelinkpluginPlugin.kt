@@ -1,5 +1,4 @@
 package com.example.lblelinkplugin
-
 import android.content.Context
 import androidx.annotation.NonNull;
 import io.flutter.embedding.engine.plugins.FlutterPlugin
@@ -13,6 +12,8 @@ import java.util.logging.StreamHandler
 
 /** LblelinkpluginPlugin */
 public class LblelinkpluginPlugin : FlutterPlugin, MethodCallHandler {
+
+  ///=== registerWith()
   override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
     val channel = MethodChannel(flutterPluginBinding.getFlutterEngine().getDartExecutor(), "lblelinkplugin")
     channel.setMethodCallHandler(LblelinkpluginPlugin())
@@ -37,30 +38,32 @@ public class LblelinkpluginPlugin : FlutterPlugin, MethodCallHandler {
   // them functionally equivalent. Only one of onAttachedToEngine or registerWith will be called
   // depending on the user's project. onAttachedToEngine or registerWith must both be defined
   // in the same class.
-  companion object {
-    var ctx: Context? = null
-    @JvmStatic
-    fun registerWith(registrar: Registrar) {
-      val channel = MethodChannel(registrar.messenger(), "lblelinkplugin")
-      channel.setMethodCallHandler(LblelinkpluginPlugin())
-      ctx = registrar.context().applicationContext
-      EventChannel(registrar.messenger(), "lblelink_event").setStreamHandler(object : EventChannel.StreamHandler {
-        override fun onListen(arguments: Any?, events: EventChannel.EventSink?) {
-          LeBUtil.instance.initEvent(events)
-        }
 
-        override fun onCancel(arguments: Any?) {
-          LeBUtil.instance.removeEvent()
-        }
-      })
-    }
-  }
+   companion object {
+     var ctx: Context? = null
+     @JvmStatic
+     fun registerWith(registrar: Registrar) {
+       val channel = MethodChannel(registrar.messenger(), "lblelinkplugin")
+       channel.setMethodCallHandler(LblelinkpluginPlugin())
+       ctx = registrar.context().applicationContext
+       EventChannel(registrar.messenger(), "lblelink_event").setStreamHandler(object : EventChannel.StreamHandler {
+         override fun onListen(arguments: Any?, events: EventChannel.EventSink?) {
+           LeBUtil.instance.initEvent(events)
+         }
 
+         override fun onCancel(arguments: Any?) {
+           LeBUtil.instance.removeEvent()
+         }
+       })
+     }
+   }
+
+  ///调用具体方法 dart端调用invokeMethod()时执行对应方法
   override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
     when (call.method) {
       "initLBSdk" -> {
         ctx?.run {
-          LeBUtil.instance.initUtil(this, call.argument<String>("appid")!!, call.argument<String>("secretKey")!!, result)
+          LeBUtil.instance.initUtil(this, call.argument<String>("androidAppid")!!, call.argument<String>("androidSecretKey")!!, result)
         }
       }
       "connectToService" -> {

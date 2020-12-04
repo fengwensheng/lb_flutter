@@ -1,7 +1,8 @@
-import Flutter
 import UIKit
+import Flutter
 
-public class SwiftLblelinkpluginPlugin: NSObject, FlutterPlugin {
+
+ public class SwiftLblelinkpluginPlugin: NSObject, FlutterPlugin {
     
     
   public static func register(with registrar: FlutterPluginRegistrar) {
@@ -19,7 +20,7 @@ public class SwiftLblelinkpluginPlugin: NSObject, FlutterPlugin {
     
     switch call.method {
         case "initLBSdk":
-        LMLBSDKManager.shareInstance.initLBSDK(appid: dict?["appid"] ?? "", secretKey: dict?["secretKey"] ?? "",result: result);
+        LMLBSDKManager.shareInstance.initLBSDK(appid: dict?["iosAppid"] ?? "", secretKey: dict?["iosSecretKey"] ?? "",result: result);
         break
         case "beginSearchEquipment":
             LMLBSDKManager.shareInstance.beginSearchEquipment()

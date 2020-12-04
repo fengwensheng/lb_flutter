@@ -1,14 +1,12 @@
 import 'package:lb_flutter/lblelinkplugin.dart';
 
-/**
- *
- * @ProjectName:    lblelink_plugin
- * @ClassName:      lb_bloc
- * @Description:    dart类作用描述
- * @Author:         孙浩
- * @QQ:             243280864
- * @CreateDate:     2020/5/19 9:45
- */
+///
+/// @ProjectName:    lblelink_plugin
+/// @ClassName:      lb_bloc
+/// @Description:    dart类作用描述
+/// @Author:         孙浩
+/// @QQ:             243280864
+/// @CreateDate:     2020/5/19 9:45
 class LBbloc with LbCallBack {
   ///添加监听
   void addListener() {
@@ -37,12 +35,8 @@ class LBbloc with LbCallBack {
 
   ///连接数据
   void connectData() {
-    Lblelinkplugin.connectToService("uuId",
-        fConnectListener: () {
-
-        }, fDisConnectListener: () {
-
-        });
+    Lblelinkplugin.connectToService("uuId", '',
+        fConnectListener: () {}, fDisConnectListener: () {});
   }
 
   ///断开连接

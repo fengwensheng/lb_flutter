@@ -1,9 +1,4 @@
-//
-//  LMLBEventChannelSupport.swift
-//  lblelinkplugin
-//
-//  Created by yunxiwangluo on 2020/5/14.
-//
+
 
 import UIKit
 import LBLelinkKit
